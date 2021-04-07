@@ -1,5 +1,7 @@
 
 import numpy as np
+import os, sys, math
+
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
@@ -99,7 +101,7 @@ class TinyYololoss(nn.Module):
         super(TinyYololoss, self).__init__()
         self.device = device
         self.strides = [32, 16]
-        image_size = 608
+        image_size = 416
         self.n_classes = n_classes
         self.n_anchors = n_anchors
 

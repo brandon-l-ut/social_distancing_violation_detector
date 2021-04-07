@@ -70,7 +70,7 @@ class TinyYolo(nn.Module):
         self.yolo1 = YoloLayer(
                                 anchor_mask=[3, 4, 5], num_classes=self.num_classes,
                                 anchors=[10, 14, 23, 27, 37, 58, 81, 82, 135, 169, 344, 319],
-                                num_anchors=6, stride=8)
+                                num_anchors=6, stride=32)
 
         self.route10 = Route()
         self.conv19 = Conv_Bn_Activation(256, 128, 1, 1, 'leaky')
@@ -80,7 +80,7 @@ class TinyYolo(nn.Module):
         self.conv21 = Conv_Bn_Activation(256, self.n_output_ch, 1, 1, 'linear', bn=False, bias=True)
         
         self.yolo2 = YoloLayer(
-                                anchor_mask=[1, 2, 3], num_classes=self.num_classes,
+                                anchor_mask=[0, 1, 2], num_classes=self.num_classes,
                                 anchors=[10, 14, 23, 27, 37, 58, 81, 82, 135, 169, 344, 319],
                                 num_anchors=6, stride=16)
 

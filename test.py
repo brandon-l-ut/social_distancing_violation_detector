@@ -11,11 +11,11 @@ if __name__ == "__main__":
     import sys
     import cv2
     
-    weightfile = "tinyyolo_10.pth"
+    weightfile = "tinyyolo_12.pth"
     imgfile = "data/train2014/COCO_train2014_000000000110.jpg"
     model = TinyYolo(inference=True)
-    width = 416
-    height = 416
+    width = 608
+    height = 608
 
     pretrained_dict = torch.load(weightfile, map_location=torch.device('cuda'))
     model.load_state_dict(pretrained_dict)

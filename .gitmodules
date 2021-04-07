@@ -1,3 +1,6 @@
 [submodule "yolov4"]
 	path = yolov4
 	url = git@github.com:snbcypher/yolov4.git
+[submodule "yolo_pruning"]
+	path = yolo_pruning
+	url = git@github.com:snbcypher/yolo_pruning.git

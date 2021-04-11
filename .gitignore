@@ -3,6 +3,8 @@
 *.weights
 *.pth
 *.json
+*.ipynb_checkpoints
+
 data/train.txt
 data/val.txt
 

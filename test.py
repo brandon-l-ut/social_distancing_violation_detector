@@ -5,14 +5,17 @@ import torch
 from yolov4.demo import detect_cv2
 from TinyYoloModel import TinyYolo
 
-##detect_cv2("./yolov4/cfg/yolov4.cfg", "weights/yolov4.weights", "data/val2014/COCO_val2014_000000262148.jpg")
+##detect_cv2("./yolov4/cfg/yolov4-tiny.cfg", "weights/yolov4-tiny.weights", "data/val2014/COCO_val2014_000000262148.jpg")
 
 if __name__ == "__main__":
+    detect_cv2("./yolov4/cfg/yolov4.cfg", "weights/yolov4.weights", "data/val2014/COCO_val2014_000000262148.jpg")
+    exit()
+
     import sys
     import cv2
     
-    weightfile = "tinyyolo_12.pth"
-    imgfile = "data/train2014/COCO_train2014_000000000110.jpg"
+    weightfile = "tinyyolo_18.pth"
+    imgfile = "data/val2014/COCO_val2014_000000262148.jpg"
     model = TinyYolo(inference=True)
     width = 608
     height = 608
@@ -35,7 +38,7 @@ if __name__ == "__main__":
     sized = cv2.cvtColor(sized, cv2.COLOR_BGR2RGB)
 
     from tool.utils import load_class_names, plot_boxes_cv2
-    from tool.torch_utils import do_detect
+    from yolov4.tool.torch_utils import do_detect
 
     for i in range(2):  # This 'for' loop is for speed check
                         # Because the first iteration is usually longer

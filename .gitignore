@@ -7,6 +7,6 @@
 
 data/train.txt
 data/val.txt
-
+data/*
 data/annotations
 data/images

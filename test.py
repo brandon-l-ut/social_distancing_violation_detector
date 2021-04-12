@@ -37,7 +37,7 @@ if __name__ == "__main__":
     sized = cv2.resize(img, (width, height))
     sized = cv2.cvtColor(sized, cv2.COLOR_BGR2RGB)
 
-    from tool.utils import load_class_names, plot_boxes_cv2
+    from yolov4.tool.utils import load_class_names, plot_boxes_cv2
     from yolov4.tool.torch_utils import do_detect
 
     for i in range(2):  # This 'for' loop is for speed check

@@ -145,3 +145,4 @@ if __name__ == '__main__':
 ## TODO: (1) figure out how to show images at the real time fps 
 ##       (2) add ability to save video with bboxes -> cfg.display_output, cfg.save_output
 ##       (3) add IPM algo
+##       (4) investigate monolocco distance in combination with disnet

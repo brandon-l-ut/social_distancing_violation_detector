@@ -21,8 +21,8 @@ Cfg.file_path = "vid_short.mp4"
 Cfg.h_img = 720
 Cfg.w_img = 1280
 Cfg.video = True
-Cfg.display_output = True
 Cfg.save_output = True
+Cfg.output_path = "out.avi"
 
 Cfg.distance_calculation = Distance_Methods.Geometric
 

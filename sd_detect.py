@@ -18,6 +18,8 @@ class SD_Detector():
         self.w_img = cfg.w_img
         self.h_img = cfg.h_img
         self.cuda = cfg.cuda
+        self.save_output = cfg.save_output
+        self.output_path = cfg.output_path
 
         self.model = Darknet(cfg.cfg_file)
         self.model.load_weights(cfg.weight_file)
@@ -108,17 +110,34 @@ class SD_Detector():
 
     def sd_video(self):
         cap = cv2.VideoCapture(self.file_fname)
+        fps = int(cap.get(cv2.CAP_PROP_FPS))
+        i_frame = 0
+        if (self.save_output):
+            save_file = cv2.VideoWriter(self.output_path, 
+                         cv2.VideoWriter_fourcc(*'MJPG'),
+                         10, (self.w_img, self.h_img))
 
         while (cap.isOpened()):
+            i_frame += 1
             ret, frame = cap.read()
+
+            ## Need to change this based on how fast object detection is
+            if i_frame % 2 == 1:
+                continue
             
             if ret:
                 img = self.sd_frame(frame)
                 cv2.imshow("Social Distancing Results", img)
+                if self.save_output:
+                    save_file.write(img)
+
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
             else:
                 break            
+
+        if self.save_output:
+            save_file.release()
 
         cap.release()
         cv2.destroyAllWindows()
@@ -130,6 +149,10 @@ class SD_Detector():
             img = cv2.imread(self.file_fname)
             img = self.sd_frame(img)
             cv2.imshow("Social Distancing Results", img)
+
+            if self.save_output:
+                cv2.imwrite(self.output_path, img)
+
             cv2.waitKey(0)
             #closing all open windows 
             cv2.destroyAllWindows() 
@@ -142,7 +165,7 @@ if __name__ == '__main__':
     detector.detect_social_distance()
 
 
-## TODO: (1) figure out how to show images at the real time fps 
-##       (2) add ability to save video with bboxes -> cfg.display_output, cfg.save_output
+## TODO: 
+##    
 ##       (3) add IPM algo
 ##       (4) investigate monolocco distance in combination with disnet

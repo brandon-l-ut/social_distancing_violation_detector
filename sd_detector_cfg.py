@@ -16,11 +16,11 @@ Cfg.weight_file = os.path.join(_BASE_DIR, 'weights', 'yolov4.weights')
 Cfg.cuda = True
 
 # Vido or image file to detect social distancing in
-#Cfg.file_path = "data/train2014/COCO_train2014_000000000110.jpg"
-Cfg.file_path = "vid_short.mp4"
-Cfg.h_img = 720
-Cfg.w_img = 1280
-Cfg.video = True
+Cfg.file_path = "data/train2014/COCO_train2014_000000023548.jpg"
+#Cfg.file_path = "vid_short.mp4"
+Cfg.h_img = 480
+Cfg.w_img = 640
+Cfg.video = False
 
 
 
@@ -30,4 +30,4 @@ Cfg.distance_calculation = Distance_Methods.Geometric
 Cfg.w_focal = 4.15
 Cfg.h_focal = 4.15
 Cfg.w_sens = 4.80
-Cfg.h_sens = 3.60
+Cfg.h_sens = 3600

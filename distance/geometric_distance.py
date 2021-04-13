@@ -1,13 +1,13 @@
 import math
 
 class Camera_Geom:
-    def __init__(self, w_focal, h_focal, w_sens, h_sens, w_img, h_img):
-        self.w_focal = w_focal ## mm
-        self.h_focal = h_focal ## mm
-        self.w_sens = w_sens ## mm
-        self.h_sens = h_sens ## mm
-        self.w_img = w_img 
-        self.h_img = h_img 
+    def __init__(self, cfg):
+        self.w_focal = cfg.w_focal ## mm
+        self.h_focal = cfg.h_focal ## mm
+        self.w_sens = cfg.w_sens ## mm
+        self.h_sens = cfg.h_sens ## mm
+        self.w_img = cfg.w_img 
+        self.h_img = cfg.h_img 
 
         self.pixel_size = .5 * ((self.w_sens / self.w_img) + (self.h_sens / self.h_img))
 

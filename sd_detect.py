@@ -5,94 +5,140 @@ import time
 
 from torch.autograd import Variable
 
-from distance.geometric_distance import Camera_Geom
-
-from yolov4.tool import utils
 from yolov4.tool.darknet2pytorch import Darknet
+from yolov4.tool import utils
 
-def do_detect(model, img, conf_thresh, nms_thresh, use_cuda=1):
-    model.eval()
-    t0 = time.time()
+from distance.geometric_distance import Camera_Geom
+from sd_detector_cfg import Distance_Methods
 
-    if type(img) == np.ndarray and len(img.shape) == 3:  # cv2 image
-        img = torch.from_numpy(img.transpose(2, 0, 1)).float().div(255.0).unsqueeze(0)
-    elif type(img) == np.ndarray and len(img.shape) == 4:
-        img = torch.from_numpy(img.transpose(0, 3, 1, 2)).float().div(255.0)
-    else:
-        print("unknow image type")
-        exit(-1)
+class SD_Detector():
+    def __init__(self, cfg):
+        self.file_fname = cfg.file_path
+        self.video = cfg.video
+        self.w_img = cfg.w_img
+        self.h_img = cfg.h_img
+        self.cuda = cfg.cuda
 
-    if use_cuda:
-        img = img.cuda()
-    img = torch.autograd.Variable(img)
-    
-    t1 = time.time()
+        self.model = Darknet(cfg.cfg_file)
+        self.model.load_weights(cfg.weight_file)
+        if cfg.cuda:
+            self.model.cuda()
 
-    output = model(img)
-
-    t2 = time.time()
-
-    print('-----------------------------------')
-    print('           Preprocess : %f' % (t1 - t0))
-    print('      Model Inference : %f' % (t2 - t1))
-    print('-----------------------------------')
-
-    return utils.post_processing(img, conf_thresh, nms_thresh, output)
-
-def post_process_bboxes(bboxes, w, h):
-    ## convert bboxes back to pixels, filter out non-people
-    post_bboxes = []
-    for bbox in bboxes:
-        if bbox[6] != 0:
-            continue
-        x1 = bbox[0] * w
-        y1 = bbox[1] * h
-        x2 = bbox[2] * w
-        y2 = bbox[3] * h
-        post_bboxes.append([x1, y1, x2, y2])
-
-    return post_bboxes
-        
-def draw_boxes(img, bboxes):
-    img = np.copy(img)
-    red = (0, 0, 255)
-    green = (0, 255, 0)
-
-    for bbox in bboxes:
-        if bbox[4] == 1:
-            color = red
+        if cfg.distance_calculation is Distance_Methods.Geometric:
+            self.distance_calculator = Camera_Geom(cfg)
         else:
-            color = green
+            print("Error")
+            exit()
 
-        x1 = int(bbox[0])
-        y1 = int(bbox[1])
-        x2 = int(bbox[2])
-        y2 = int(bbox[3])
-        img = cv2.rectangle(img, (x1, y1), (x2, y2), color)
-    
-    cv2.imwrite("tmp.jpg", img)
 
-def sd_frame(img_fname):
-    m = Darknet("yolov4/cfg/yolov4.cfg")
-    m.load_weights("weights/yolov4.weights")
+    def do_detect(self, model, img, conf_thresh, nms_thresh, use_cuda=1):
+        model.eval()
+        t0 = time.time()
 
-    use_cuda = True
-    if use_cuda:
-        m.cuda()
+        if type(img) == np.ndarray and len(img.shape) == 3:  # cv2 image
+            img = torch.from_numpy(img.transpose(2, 0, 1)).float().div(255.0).unsqueeze(0)
+        elif type(img) == np.ndarray and len(img.shape) == 4:
+            img = torch.from_numpy(img.transpose(0, 3, 1, 2)).float().div(255.0)
+        else:
+            print("unknow image type")
+            exit(-1)
 
-    img = cv2.imread(img_fname)
-    sized = cv2.resize(img, (m.width, m.height))
-    sized = cv2.cvtColor(sized, cv2.COLOR_BGR2RGB)
+        if use_cuda:
+            img = img.cuda()
+        img = torch.autograd.Variable(img)
+        
+        t1 = time.time()
 
-    c = Camera_Geom(4.15, 4.15, 4.80, 3.60, img.shape[1], img.shape[0])
+        output = model(img)
 
-    bboxes = do_detect(m, sized, 0.4, 0.6, use_cuda)[0]
-    post_bboxes = post_process_bboxes(bboxes, img.shape[1], img.shape[0])
+        t2 = time.time()
 
-    c.compute_violations(post_bboxes)
-    draw_boxes(img, post_bboxes)
-    
+        print('-----------------------------------')
+        print('           Preprocess : %f' % (t1 - t0))
+        print('      Model Inference : %f' % (t2 - t1))
+        print('-----------------------------------')
 
+        return utils.post_processing(img, conf_thresh, nms_thresh, output)
+
+    def post_process_bboxes(self,bboxes):
+        ## convert bboxes back to pixels, filter out non-people
+        post_bboxes = []
+        for bbox in bboxes:
+            if bbox[6] != 0:
+                continue
+            x1 = bbox[0] * self.w_img
+            y1 = bbox[1] * self.h_img
+            x2 = bbox[2] * self.w_img
+            y2 = bbox[3] * self.h_img
+            post_bboxes.append([x1, y1, x2, y2])
+
+        return post_bboxes
+            
+    def draw_boxes(self, img, bboxes):
+        img = np.copy(img)
+        red = (0, 0, 255)
+        green = (0, 255, 0)
+
+        for bbox in bboxes:
+            if bbox[4] == 1:
+                color = red
+            else:
+                color = green
+
+            x1 = int(bbox[0])
+            y1 = int(bbox[1])
+            x2 = int(bbox[2])
+            y2 = int(bbox[3])
+            img = cv2.rectangle(img, (x1, y1), (x2, y2), color)
+        
+        return img
+
+    def sd_frame(self, img):
+        # assumes cv2 img
+        sized = cv2.resize(img, (self.model.width, self.model.height))
+        sized = cv2.cvtColor(sized, cv2.COLOR_BGR2RGB)
+
+        bboxes = self.do_detect(self.model, sized, 0.4, 0.6, self.cuda)[0]
+        post_bboxes = self.post_process_bboxes(bboxes)
+
+        self.distance_calculator.compute_violations(post_bboxes)
+        ret_img = self.draw_boxes(img, post_bboxes)
+
+        return ret_img
+
+    def sd_video(self):
+        cap = cv2.VideoCapture(self.file_fname)
+
+        while (cap.isOpened()):
+            ret, frame = cap.read()
+            
+            if ret:
+                img = self.sd_frame(frame)
+                cv2.imshow("Social Distancing Results", img)
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    break
+            else:
+                break            
+            
+        cap.release()
+        cv2.destroyAllWindows()
+
+    def detect_social_distance(self):
+        if self.video:
+            self.sd_video()
+        else:
+            img = cv2.imread(self.file_fname)
+            img = self.sd_frame(img)
+            cv2.imshow("Social Distancing Results", img)
+            cv2.waitKey(0)
+            #closing all open windows 
+            cv2.destroyAllWindows() 
+
+from sd_detector_cfg import Cfg
 
 if __name__ == '__main__':
-    sd_frame("data/train2014/COCO_train2014_000000000110.jpg")
+
+    detector = SD_Detector(Cfg)
+    detector.detect_social_distance()
+
+    

@@ -21,8 +21,8 @@ Cfg.file_path = "data/train2014/COCO_train2014_000000023548.jpg"
 Cfg.h_img = 480
 Cfg.w_img = 640
 Cfg.video = False
-
-
+Cfg.display_output = True
+Cfg.save_output = True
 
 Cfg.distance_calculation = Distance_Methods.Geometric
 

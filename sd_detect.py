@@ -169,3 +169,5 @@ if __name__ == '__main__':
 ##    
 ##       (3) add IPM algo
 ##       (4) investigate monolocco distance in combination with disnet
+##       (5) centroid tracking
+##       (6) misc statistics

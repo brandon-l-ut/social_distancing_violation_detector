@@ -8,11 +8,11 @@ class Camera_Geom:
         self.h_sens = cfg.h_sens ## mm
         self.w_img = cfg.w_img 
         self.h_img = cfg.h_img 
+        self.social_distance = cfg.social_distance #mm
 
         self.pixel_size = .5 * ((self.w_sens / self.w_img) + (self.h_sens / self.h_img))
 
         self.avg_height = 1600 #mm
-        self.social_distance = 1800 #mm
 
     ## assumes bboxes are x1y1, x2y2
     def geometric_distance(self, bbox):
@@ -45,7 +45,7 @@ class Camera_Geom:
         for p1 in range(len(bboxes)):
             if (bboxes[p1][4] == 1):
                 continue
-            for p2 in range(p1, len(bboxes)):
+            for p2 in range(p1+1, len(bboxes)):
                 if self.compute_pair_violation(bboxes[p1], bboxes[p2]):
                     bboxes[p1][4] = 1
                     bboxes[p2][4] = 1

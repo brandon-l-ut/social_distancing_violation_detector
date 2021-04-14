@@ -9,6 +9,7 @@ from yolov4.tool.darknet2pytorch import Darknet
 from yolov4.tool import utils
 
 from distance.geometric_distance import Camera_Geom
+from distance.ipm_distance import Camera_IPM
 from sd_detector_cfg import Distance_Methods
 
 class SD_Detector():
@@ -28,6 +29,8 @@ class SD_Detector():
 
         if cfg.distance_calculation is Distance_Methods.Geometric:
             self.distance_calculator = Camera_Geom(cfg)
+        elif cfg.distance_calculation is Distance_Methods.IPM:
+            self.distance_calculator = Camera_IPM(cfg)
         else:
             print("Error")
             exit()
@@ -105,7 +108,6 @@ class SD_Detector():
 
         self.distance_calculator.compute_violations(post_bboxes)
         ret_img = self.draw_boxes(img, post_bboxes)
-
         return ret_img
 
     def sd_video(self):
@@ -167,7 +169,6 @@ if __name__ == '__main__':
 
 ## TODO: 
 ##    
-##       (3) add IPM algo
 ##       (4) investigate monolocco distance in combination with disnet
 ##       (5) centroid tracking
 ##       (6) misc statistics

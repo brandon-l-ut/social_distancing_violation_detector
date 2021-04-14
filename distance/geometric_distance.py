@@ -20,7 +20,7 @@ class Camera_Geom:
         ydif = bbox[3] - bbox[1]
         pixel_height = abs(ydif)
         distance = self.avg_height * self.h_focal / (pixel_height * self.pixel_size)
-
+        
         return distance
 
     def compute_pair_violation(self, bbox1, bbox2):
@@ -30,7 +30,7 @@ class Camera_Geom:
 
         w = self.w_sens * abs(bbox1[0] - bbox2[0]) * self.pixel_size / self.w_focal
         social_distance = math.sqrt(w**2 + (d1 - d2)**2)
-
+        print("Social Distance: ", social_distance)
         if social_distance < self.social_distance:
             return True
         else:

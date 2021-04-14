@@ -7,6 +7,7 @@ import glob
   
 # Define the dimensions of checkerboard
 CHECKERBOARD = (8, 6)
+CHECKERBOARD_SQUARE = 25 #mm
   
   
 # stop the iteration when specified
@@ -28,7 +29,7 @@ objectp3d = np.zeros((1, CHECKERBOARD[0]
                       * CHECKERBOARD[1], 
                       3), np.float32)
 objectp3d[0, :, :2] = np.mgrid[0:CHECKERBOARD[0],
-                               0:CHECKERBOARD[1]].T.reshape(-1, 2)
+                               0:CHECKERBOARD[1]].T.reshape(-1, 2) * CHECKERBOARD_SQUARE
 prev_img_shape = None
   
   
@@ -46,8 +47,6 @@ for filename in images:
     #array_beta = np.array([-100.0])
     #cv2.add(image, array_beta, image)
     #cv2.multiply(image, array_alpha, image)
-    cv2.imshow('img', image)
-    cv2.waitKey(0)
     grayColor = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
   
     # Find the chess board corners

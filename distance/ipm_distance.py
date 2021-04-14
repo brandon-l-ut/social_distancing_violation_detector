@@ -24,13 +24,16 @@ class Camera_IPM:
             im_coords = np.array([bbox[2], bbox[3], 1])
             r_coord = np.matmul(self.intrinsic_matrix, im_coords)
             r_coords.append(list(r_coord[:2]))
-            
+        
         for p1 in range(len(bboxes)):
             if (bboxes[p1][4] == 1):
                 continue
             for p2 in range(p1+1, len(bboxes)):
                 xdif = r_coords[p1][0] - r_coords[p2][0]
                 ydif = r_coords[p1][1] - r_coords[p2][1]
-                if math.sqrt(xdif**2 + ydif**2) < self.social_distance:
+                social_dist = math.sqrt(xdif**2 + ydif**2)
+                print("Social distance:", social_dist)
+
+                if social_dist < self.social_distance:
                     bboxes[p1][4] = 1
                     bboxes[p2][4] = 1

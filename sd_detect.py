@@ -168,7 +168,7 @@ if __name__ == '__main__':
 
 
 ## TODO: 
-##    
+##       (1) calibrate iphone camera
 ##       (4) investigate monolocco distance in combination with disnet
 ##       (5) centroid tracking
 ##       (6) misc statistics

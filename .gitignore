@@ -10,3 +10,5 @@ data/val.txt
 data/*
 data/annotations
 data/images
+
+distance/calib_pics

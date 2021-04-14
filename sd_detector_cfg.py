@@ -28,7 +28,7 @@ Cfg.video = False
 Cfg.save_output = True
 Cfg.output_path = "out.jpg"
 
-Cfg.distance_calculation = Distance_Methods.Geometric
+Cfg.distance_calculation = Distance_Methods.IPM
 
 ## For Geometric - iphone 8
 Cfg.w_focal = 3.99
@@ -42,6 +42,6 @@ Cfg.inverted = False
 # Rotation matrix-R
 # Translation matrix-T
 # Need to put K*R*T below, without 4th column
-Cfg.intrinsic_matrix = [[1, 0, 0],
-                        [0, 1, 0],
-                        [0, 0, 1]]
+Cfg.intrinsic_matrix = [[539.51637983,   0.0,         296.88290305],
+                        [  0.0,         534.35405524, 342.51909901],
+                        [  0.0,           0.0,           1.0        ]]

@@ -1,16 +1,16 @@
 import math
 import numpy as np
 
-class Camera_IPM:
+class Camera_Disnet:
     def __init__(self, cfg):
         self.social_distance = cfg.social_distance
         self.h_img = cfg.h_img
         if cfg.inverted:
-            self.intrinsic_matrix = np.array(cfg.calib_matrix)
+            self.k_matrix = np.array(cfg.k_matrix)
         else:
-            tmp_matrix = np.array(cfg.calib_matrix)
-            self.intrinsic_matrix = np.linalg.inv(tmp_matrix)
-
+            tmp_matrix = np.array(cfg.k_matrix)
+            self.k_matrix = np.linalg.inv(tmp_matrix)
+        self.dist = 2743.2
     ## Called by sd_detector
     def compute_violations(self, bboxes):
         ## modifies list of bboxes
@@ -23,9 +23,11 @@ class Camera_IPM:
         for bbox in bboxes:
             im_coords = np.array([bbox[2], self.h_img - bbox[3], 1])
             print("im coords", im_coords)
-            r_coord = np.matmul(self.intrinsic_matrix, im_coords)
-            print("r coord:", r_coord/r_coord[2])
-            r_coords.append(list(r_coord/r_coord[2]))
+            r_coord = np.matmul(self.k_matrix, im_coords)
+            r_coord = r_coord/r_coord[2]
+            r_coord = r_coord * self.dist / np.linalg.norm(r_coord)
+            print("r coord:", r_coord)
+            r_coords.append(list(r_coord))
             
         for p1 in range(len(bboxes)):
             if (bboxes[p1][4] == 1):

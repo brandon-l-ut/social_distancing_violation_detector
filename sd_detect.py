@@ -10,6 +10,8 @@ from yolov4.tool import utils
 
 from distance.geometric_distance import Camera_Geom
 from distance.ipm_distance import Camera_IPM
+from distance.disnet_distance import Camera_Disnet
+
 from sd_detector_cfg import Distance_Methods
 
 class SD_Detector():
@@ -31,6 +33,8 @@ class SD_Detector():
             self.distance_calculator = Camera_Geom(cfg)
         elif cfg.distance_calculation is Distance_Methods.IPM:
             self.distance_calculator = Camera_IPM(cfg)
+        elif cfg.distance_calculation is Distance_Methods.Disnet:
+            self.distance_calculator = Camera_Disnet(cfg)  
         else:
             print("Error")
             exit()

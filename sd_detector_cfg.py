@@ -22,7 +22,7 @@ Cfg.social_distance = 1800 #mm
 # Vido or image file to detect social distancing in
 #Cfg.file_path = "data/train2014/COCO_train2014_000000023548"
 #Cfg.file_path = "test_img/vid_short.mp4"
-Cfg.file_path = "test_img/disnet/resized/test_1.jpg"
+Cfg.file_path = "test_img/geometric/resized/test_2.jpg"
 Cfg.h_img = 720
 Cfg.w_img = 540
 Cfg.video = False
@@ -51,7 +51,9 @@ Cfg.calib_matrix = [[ 5.80616134e+02,  1.34470135e+02,   -1.01781279e+06] ,
  #[ 0.00000000e+00,  6.12550496e+02,  5.19641209e+01, -2.27083208e+05],
  #[ 0.00000000e+00,  5.00000000e-01,  8.66025404e-01, -3.78453101e+03]]
 
- ## For disnet
+ ## For Disnet
 Cfg.k_matrix = [[580.6161339,    0.,         268.94026972],
  [  0.,         577.98851373, 363.36070951],
  [  0. ,          0.,           1.        ]]
+
+Cfg.disnet_weights = "distance/disnet/Disnet.pth"

@@ -1,19 +1,29 @@
 import math
 import numpy as np
 
+import torch
+
+from distance.disnet.disnet import Disnet
+
 class Camera_Disnet:
     def __init__(self, cfg):
         self.social_distance = cfg.social_distance
         self.h_img = cfg.h_img
+
+        self.model = Disnet()
+        self.model.load_state_dict(torch.load(cfg.disnet_weights))
+
         if cfg.inverted:
             self.k_matrix = np.array(cfg.k_matrix)
         else:
             tmp_matrix = np.array(cfg.k_matrix)
             self.k_matrix = np.linalg.inv(tmp_matrix)
-        self.dist = 2743
+        #self.dist = 2743
 
     def get_distance(self, im_coords):
-        return self.dist
+        with torch.no_grad():
+            ## Disnet returns distance in meters - converting to mm
+            return self.model(im_coords, True) * 1000
 
     ## Called by sd_detector
     def compute_violations(self, bboxes):
@@ -25,12 +35,16 @@ class Camera_Disnet:
         # Get real world coords of each person
         r_coords = []
         for bbox in bboxes:
-            im_coords = np.array([bbox[2], self.h_img - bbox[3], 1])
-            print("im coords", im_coords)
-            distance = self.get_distance(im_coords)
-            norm_coord = np.matmul(self.k_matrix, im_coords)
-            print("norm coord", norm_coord)
-            r_coord = norm_coord * distance / np.linalg.norm(norm_coord)
+            im_coord1 = bbox[:2] + [1]
+            im_coord2 = bbox[2:4] + [1]
+
+            norm_coord1 = np.matmul(self.k_matrix, im_coord1).tolist()
+            norm_coord2 = np.matmul(self.k_matrix, im_coord2).tolist()
+
+            bbox_torch = torch.tensor(norm_coord1[:2] + norm_coord2[:2])
+            distance = self.get_distance(bbox_torch).tolist()[0][0]
+            
+            r_coord = np.array(norm_coord1) * distance / np.linalg.norm(np.array(norm_coord1))
             print("r coord:", r_coord)
             r_coords.append(list(r_coord))
             

@@ -11,7 +11,6 @@ data/*
 data/annotations
 data/images
 
-test_img/raw
-test_img/resized
+test_img/*.jpg
 
 distance/calib_pics

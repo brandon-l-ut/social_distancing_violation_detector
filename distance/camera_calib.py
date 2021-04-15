@@ -7,7 +7,6 @@ import glob
   
 # Define the dimensions of checkerboard
 CHECKERBOARD = (8, 6)
-CHECKERBOARD_SQUARE = 25 #mm
   
   
 # stop the iteration when specified
@@ -29,7 +28,7 @@ objectp3d = np.zeros((1, CHECKERBOARD[0]
                       * CHECKERBOARD[1], 
                       3), np.float32)
 objectp3d[0, :, :2] = np.mgrid[0:CHECKERBOARD[0],
-                               0:CHECKERBOARD[1]].T.reshape(-1, 2) * CHECKERBOARD_SQUARE
+                               0:CHECKERBOARD[1]].T.reshape(-1, 2)
 prev_img_shape = None
   
   
@@ -37,16 +36,11 @@ prev_img_shape = None
 # in a given directory. Since no path is
 # specified, it will take current directory
 # jpg files alone
-images = glob.glob('calib_pics/*.jpg')
+images = glob.glob('calibpics/*.jpg')
   
 for filename in images:
     image = cv2.imread(filename)
     image = cv2.resize(image, (540, 720))
-    
-    #array_alpha = np.array([1.25])
-    #array_beta = np.array([-100.0])
-    #cv2.add(image, array_beta, image)
-    #cv2.multiply(image, array_alpha, image)
     grayColor = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
   
     # Find the chess board corners
@@ -62,6 +56,7 @@ for filename in images:
     # refine the pixel coordinates and display
     # them on the images of checker board
     if ret == True:
+        print("Found Checkerboard")
         threedpoints.append(objectp3d)
   
         # Refining pixel coordinates
@@ -76,10 +71,10 @@ for filename in images:
                                           CHECKERBOARD, 
                                           corners2, ret)
   
-    cv2.imshow('img', image)
-    cv2.waitKey(0)
+    #cv2.imshow('img', image)
+    #cv2.waitKey(0)
   
-cv2.destroyAllWindows()
+#cv2.destroyAllWindows()
   
 h, w = image.shape[:2]
   

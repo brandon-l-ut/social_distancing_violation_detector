@@ -22,9 +22,10 @@ class Camera_IPM:
         r_coords = []
         for bbox in bboxes:
             im_coords = np.array([bbox[2], bbox[3], 1])
+            print("im coords", im_coords)
             r_coord = np.matmul(self.intrinsic_matrix, im_coords)
-            r_coords.append(list(r_coord[:2]))
-        
+            r_coords.append(list(r_coord))
+            
         for p1 in range(len(bboxes)):
             if (bboxes[p1][4] == 1):
                 continue

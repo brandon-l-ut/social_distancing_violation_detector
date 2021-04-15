@@ -4,7 +4,7 @@ import numpy as np
 class Camera_IPM:
     def __init__(self, cfg):
         self.social_distance = cfg.social_distance
-
+        self.h_img = cfg.h_img
         if cfg.inverted:
             self.intrinsic_matrix = np.array(cfg.intrinsic_matrix)
         else:
@@ -21,10 +21,11 @@ class Camera_IPM:
         # Get real world coords of each person
         r_coords = []
         for bbox in bboxes:
-            im_coords = np.array([bbox[2], bbox[3], 1])
+            im_coords = np.array([bbox[2], self.h_img - bbox[3], 1])
             print("im coords", im_coords)
             r_coord = np.matmul(self.intrinsic_matrix, im_coords)
-            r_coords.append(list(r_coord))
+            print("r coord:", r_coord/r_coord[2])
+            r_coords.append(list(r_coord/r_coord[2]))
             
         for p1 in range(len(bboxes)):
             if (bboxes[p1][4] == 1):

@@ -28,7 +28,7 @@ objectp3d = np.zeros((1, CHECKERBOARD[0]
                       * CHECKERBOARD[1], 
                       3), np.float32)
 objectp3d[0, :, :2] = np.mgrid[0:CHECKERBOARD[0],
-                               0:CHECKERBOARD[1]].T.reshape(-1, 2)
+                               0:CHECKERBOARD[1]].T.reshape(-1, 2) * 25
 prev_img_shape = None
   
   
@@ -71,8 +71,8 @@ for filename in images:
                                           CHECKERBOARD, 
                                           corners2, ret)
   
-    #cv2.imshow('img', image)
-    #cv2.waitKey(0)
+    cv2.imshow('img', image)
+    cv2.waitKey(0)
   
 #cv2.destroyAllWindows()
   

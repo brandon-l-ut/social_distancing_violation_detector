@@ -28,7 +28,10 @@ class Camera_Geom:
         d1 = self.geometric_distance(bbox1)
         d2 = self.geometric_distance(bbox2)
 
-        w = self.w_sens * abs(bbox1[0] - bbox2[0]) * self.pixel_size / self.w_focal
+        p1_x_center = abs(bbox1[0] - bbox1[2]) / 2
+        p2_x_center = abs(bbox2[0] - bbox2[2]) / 2
+
+        w = self.w_sens * abs(p1_x_center - p2_x_center) * self.pixel_size / self.w_focal
         social_distance = math.sqrt(w**2 + (d1 - d2)**2)
         print("Social Distance: ", social_distance)
         if social_distance < self.social_distance:

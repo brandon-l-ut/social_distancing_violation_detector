@@ -11,8 +11,8 @@ from easydict import EasyDict
 _BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 Cfg = EasyDict()
-Cfg.cfg_file = os.path.join(_BASE_DIR, 'yolov4', 'cfg', 'yolov4-tiny.cfg')
-Cfg.weight_file = os.path.join(_BASE_DIR, 'weights', 'yolov4-tiny.weights')
+Cfg.cfg_file = os.path.join(_BASE_DIR, 'yolov4', 'cfg', 'yolov4.cfg')
+Cfg.weight_file = os.path.join(_BASE_DIR, 'weights', 'yolov4.weights')
 Cfg.cuda = True
 
 ## 1800 mm ~ 6 ft
@@ -20,12 +20,12 @@ Cfg.social_distance = 1800 #mm
 
 # Vido or image file to detect social distancing in
 #Cfg.file_path = "data/train2014/COCO_train2014_000000023548"
-#Cfg.file_path = "vid_short.mp4"
-Cfg.file_path = "test_img/ipm/resized/test_3.jpg"
+Cfg.file_path = "test_img/vid_short.mp4"
+#Cfg.file_path = "test_img/geometric/resized/test_7.jpg"
 Cfg.h_img = 720
-Cfg.w_img = 540
-Cfg.video = False
-Cfg.save_output = True
+Cfg.w_img = 1280
+Cfg.video = True
+Cfg.save_output = False
 Cfg.output_path = "out.jpg"
 
 Cfg.distance_calculation = Distance_Methods.IPM
@@ -41,7 +41,7 @@ Cfg.inverted = False
 # Intrinsic matrix-K
 # Rotation matrix-R
 # Translation matrix-T
-# Need to put K*R*T below
+# Need to put K*R*T below. cut out 3rd column
 Cfg.intrinsic_matrix = [[ 5.80616134e+02,  1.34470135e+02,   -1.01781279e+06] ,
  [ 0.00000000e+00,  6.82233091e+02,  -1.12244972e+05] ,
  [ 0.00000000e+00,  5.00000000e-01,  -3.78453101e+03]]

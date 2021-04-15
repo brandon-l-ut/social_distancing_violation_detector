@@ -10,7 +10,11 @@ class Camera_Disnet:
         else:
             tmp_matrix = np.array(cfg.k_matrix)
             self.k_matrix = np.linalg.inv(tmp_matrix)
-        self.dist = 2743.2
+        self.dist = 2743
+
+    def get_distance(self, im_coords):
+        return self.dist
+
     ## Called by sd_detector
     def compute_violations(self, bboxes):
         ## modifies list of bboxes
@@ -23,9 +27,10 @@ class Camera_Disnet:
         for bbox in bboxes:
             im_coords = np.array([bbox[2], self.h_img - bbox[3], 1])
             print("im coords", im_coords)
-            r_coord = np.matmul(self.k_matrix, im_coords)
-            r_coord = r_coord/r_coord[2]
-            r_coord = r_coord * self.dist / np.linalg.norm(r_coord)
+            distance = self.get_distance(im_coords)
+            norm_coord = np.matmul(self.k_matrix, im_coords)
+            print("norm coord", norm_coord)
+            r_coord = norm_coord * distance / np.linalg.norm(norm_coord)
             print("r coord:", r_coord)
             r_coords.append(list(r_coord))
             
@@ -34,8 +39,8 @@ class Camera_Disnet:
                 continue
             for p2 in range(p1+1, len(bboxes)):
                 xdif = r_coords[p1][0] - r_coords[p2][0]
-                ydif = r_coords[p1][1] - r_coords[p2][1]
-                social_dist = math.sqrt(xdif**2 + ydif**2)
+                zdif = r_coords[p1][2] - r_coords[p2][2]
+                social_dist = math.sqrt(xdif**2 + zdif**2)
                 print("Social distance:", social_dist)
 
                 if social_dist < self.social_distance:

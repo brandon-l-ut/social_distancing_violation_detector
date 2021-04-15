@@ -70,7 +70,7 @@ for filename in images:
         image = cv2.drawChessboardCorners(image, 
                                           CHECKERBOARD, 
                                           corners2, ret)
-  
+    print(twodpoints[-1])
     cv2.imshow('img', image)
     cv2.waitKey(0)
   

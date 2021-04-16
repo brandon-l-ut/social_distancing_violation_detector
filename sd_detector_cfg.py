@@ -26,7 +26,7 @@ Cfg.file_path = "test_img/geometric/resized/test_2.jpg"
 Cfg.h_img = 720
 Cfg.w_img = 540
 Cfg.video = False
-Cfg.save_output = False
+Cfg.save_output = True
 Cfg.output_path = "out.jpg"
 
 Cfg.distance_calculation = Distance_Methods.Geometric

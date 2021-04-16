@@ -172,7 +172,8 @@ if __name__ == '__main__':
 
 
 ## TODO: 
-##       (1) calibrate iphone camera
-##       (4) investigate monolocco distance in combination with disnet
-##       (5) centroid tracking
-##       (6) misc statistics
+##       
+##       (1) centroid tracking
+##       (2) misc statistics
+##       (3) clean up git repo, comments, delete old submodules, requirements.txt
+##       (4) try to get disnet working better?

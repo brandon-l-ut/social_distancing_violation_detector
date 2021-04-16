@@ -5,7 +5,9 @@ import time
 
 from torch.autograd import Variable
 
-from yolov4.tool.darknet2pytorch import Darknet
+from pruning.models import Darknet as Dn_pruned
+
+from yolov4.tool.darknet2pytorch import Darknet as Dn_oob
 from yolov4.tool import utils
 
 from distance.geometric_distance import Camera_Geom
@@ -23,9 +25,18 @@ class SD_Detector():
         self.cuda = cfg.cuda
         self.save_output = cfg.save_output
         self.output_path = cfg.output_path
+        self.model_w = cfg.model_w
+        self.model_h = cfg.model_h
 
-        self.model = Darknet(cfg.cfg_file)
-        self.model.load_weights(cfg.weight_file)
+        if cfg.weight_file.endswith('.pt'):
+            self.model = Dn_pruned(cfg.cfg_file)
+            weights = torch.load(cfg.weight_file)
+            weights['model'] = {k: v for k, v in weights['model'].items() if self.model.state_dict()[k].numel() == v.numel()}
+            self.model.load_state_dict(weights['model'], strict=False)
+        else: 
+            self.model = Dn_oob(cfg.cfg_file)
+            self.model.load_weights(cfg.weight_file)
+
         if cfg.cuda:
             self.model.cuda()
 
@@ -104,7 +115,7 @@ class SD_Detector():
 
     def sd_frame(self, img):
         # assumes cv2 img
-        sized = cv2.resize(img, (self.model.width, self.model.height))
+        sized = cv2.resize(img, (self.model_w, self.model_h))
         sized = cv2.cvtColor(sized, cv2.COLOR_BGR2RGB)
 
         bboxes = self.do_detect(self.model, sized, 0.4, 0.6, self.cuda)[0]

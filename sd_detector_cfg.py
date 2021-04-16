@@ -12,8 +12,10 @@ from easydict import EasyDict
 _BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 Cfg = EasyDict()
-Cfg.cfg_file = os.path.join(_BASE_DIR, 'yolov4', 'cfg', 'yolov4-tiny.cfg')
-Cfg.weight_file = os.path.join(_BASE_DIR, 'weights', 'yolov4-tiny.weights')
+Cfg.cfg_file = os.path.join(_BASE_DIR, 'cfg', 'yolov4-tiny-person.cfg')
+Cfg.weight_file = os.path.join(_BASE_DIR, 'weights', 'best_tinyyolov4_sparseforprune0.pt')
+Cfg.model_h = 416
+Cfg.model_w = 416
 Cfg.cuda = True
 
 ## 1800 mm ~ 6 ft

@@ -171,9 +171,10 @@ if __name__ == '__main__':
     detector.detect_social_distance()
 
 
-## TODO:    
+## TODO:   
+##       (-1) make it work with pruned stuff
 ##       (0) make sure to use center x for coordinates
 ##       (1) centroid tracking
 ##       (2) misc statistics
 ##       (3) clean up git repo, comments, delete old submodules, requirements.txt
-##       (4) try to get disnet working better?
+##       (4) try to get disnet working better? - try normalizing based on pixels 

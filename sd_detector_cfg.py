@@ -23,13 +23,13 @@ Cfg.social_distance = 1800 #mm
 
 # Vido or image file to detect social distancing in
 #Cfg.file_path = "data/train2014/COCO_train2014_000000023548"
-#Cfg.file_path = "test_img/vid_short.mp4"
-Cfg.file_path = "test_img/geometric/resized/test_2.jpg"
+Cfg.file_path = "test_img/vid_short.mp4"
+#Cfg.file_path = "test_img/geometric/resized/test_2.jpg"
 Cfg.h_img = 720
-Cfg.w_img = 540
-Cfg.video = False
+Cfg.w_img = 1280
+Cfg.video = True
 Cfg.save_output = True
-Cfg.output_path = "out.jpg"
+Cfg.output_path = "out.avi"
 
 Cfg.distance_calculation = Distance_Methods.Geometric
 

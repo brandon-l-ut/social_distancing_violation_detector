@@ -6,6 +6,7 @@ import time
 from torch.autograd import Variable
 
 from pruning.models import Darknet as Dn_pruned
+from pruning.utils.utils import output_to_target, non_max_suppression
 
 from yolov4.tool.darknet2pytorch import Darknet as Dn_oob
 from yolov4.tool import utils
@@ -33,9 +34,11 @@ class SD_Detector():
             weights = torch.load(cfg.weight_file)
             weights['model'] = {k: v for k, v in weights['model'].items() if self.model.state_dict()[k].numel() == v.numel()}
             self.model.load_state_dict(weights['model'], strict=False)
+            self.pt_weights = True
         else: 
             self.model = Dn_oob(cfg.cfg_file)
             self.model.load_weights(cfg.weight_file)
+            self.pt_weights = False
 
         if cfg.cuda:
             self.model.cuda()
@@ -69,8 +72,12 @@ class SD_Detector():
         
         t1 = time.time()
 
-        output = model(img)
-
+        if self.pt_weights:
+            inf_out, _, _ = model(img)
+            output = non_max_suppression(inf_out, conf_thres=conf_thresh, iou_thres=nms_thresh, multi_label=True)
+        else:
+            inf_out = model(img)
+            utils.post_processing(img, conf_thresh, nms_thresh, inf_out)
         t2 = time.time()
 
         print('-----------------------------------')
@@ -78,20 +85,30 @@ class SD_Detector():
         print('      Model Inference : %f' % (t2 - t1))
         print('-----------------------------------')
 
-        return utils.post_processing(img, conf_thresh, nms_thresh, output)
+        return output
+
 
     def post_process_bboxes(self,bboxes):
         ## convert bboxes back to pixels, filter out non-people
         post_bboxes = []
-        for bbox in bboxes:
-            if bbox[6] != 0:
-                continue
-            x1 = bbox[0] * self.w_img
-            y1 = bbox[1] * self.h_img
-            x2 = bbox[2] * self.w_img
-            y2 = bbox[3] * self.h_img
-            post_bboxes.append([x1, y1, x2, y2])
-
+        if not self.pt_weights:
+            for bbox in bboxes:
+                if bbox[6] != 0:
+                    continue
+                x1 = bbox[0] * self.w_img
+                y1 = bbox[1] * self.h_img
+                x2 = bbox[2] * self.w_img
+                y2 = bbox[3] * self.h_img
+                post_bboxes.append([x1, y1, x2, y2])
+        else:
+            x_scale = self.w_img / self.model_w
+            y_scale = self.h_img / self.model_h
+            for bbox in bboxes:
+                x1 = bbox[0] * x_scale
+                y1 = bbox[1] * y_scale
+                x2 = bbox[2] * x_scale
+                y2 = bbox[3] * y_scale
+                post_bboxes.append([x1, y1, x2, y2])
         return post_bboxes
             
     def draw_boxes(self, img, bboxes):
@@ -119,7 +136,12 @@ class SD_Detector():
         sized = cv2.cvtColor(sized, cv2.COLOR_BGR2RGB)
 
         bboxes = self.do_detect(self.model, sized, 0.4, 0.6, self.cuda)[0]
-        post_bboxes = self.post_process_bboxes(bboxes)
+        if bboxes is None or len(bboxes) == 0:
+            return (img)
+        if not self.pt_weights:
+            post_bboxes = self.post_process_bboxes(bboxes)
+        else:
+            post_bboxes = self.post_process_bboxes(bboxes[:,:4].detach().cpu().numpy().tolist())
 
         self.distance_calculator.compute_violations(post_bboxes)
         ret_img = self.draw_boxes(img, post_bboxes)

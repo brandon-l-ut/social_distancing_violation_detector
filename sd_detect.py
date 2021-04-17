@@ -77,7 +77,7 @@ class SD_Detector():
             output = non_max_suppression(inf_out, conf_thres=conf_thresh, iou_thres=nms_thresh, multi_label=True)
         else:
             inf_out = model(img)
-            utils.post_processing(img, conf_thresh, nms_thresh, inf_out)
+            output = utils.post_processing(img, conf_thresh, nms_thresh, inf_out)
         t2 = time.time()
 
         print('-----------------------------------')

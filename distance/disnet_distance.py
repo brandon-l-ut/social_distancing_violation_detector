@@ -44,7 +44,7 @@ class Camera_Disnet:
             bbox_torch = torch.tensor(norm_coord1[:2] + norm_coord2[:2])
             distance = self.get_distance(bbox_torch).tolist()[0][0]
             
-            r_coord = np.array(norm_coord1) * distance / np.linalg.norm(np.array(norm_coord1))
+            r_coord = np.array(norm_coord1) * distance #/ np.linalg.norm(np.array(norm_coord1))
             print("r coord:", r_coord)
             r_coords.append(list(r_coord))
             

@@ -5,8 +5,10 @@ import torch.optim as optim
 
 from disnet import Disnet
 
-epochs = 200
-b_size = 512
+epochs = 500
+b_size = 1024
+train_size = 6000
+eval_size = 1481
 
 if __name__ == '__main__':
     with open('data.json') as f:
@@ -18,17 +20,18 @@ if __name__ == '__main__':
     train_x = torch.tensor(Train['X'])
     train_labels = torch.tensor(Train['Y'])
     train_dataset = torch.utils.data.TensorDataset(train_x, train_labels)
-    train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=b_size, shuffle=True)
+    train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=train_size, shuffle=True)
 
     eval_x = torch.tensor(Eval['X'])
     eval_labels = torch.tensor(Eval['Y'])
     eval_dataset = torch.utils.data.TensorDataset(eval_x, eval_labels)
-    eval_dataloader = torch.utils.data.DataLoader(eval_dataset, batch_size=b_size, shuffle=False)
+    eval_dataloader = torch.utils.data.DataLoader(eval_dataset, batch_size=eval_size, shuffle=False)
 
     model = Disnet()
 
-    criterion = nn.MSELoss()
+    criterion = nn.L1Loss()
     optimizer = optim.Adam(model.parameters(), lr = 0.001, betas=(0.9, 0.999), eps=1e-08)
+    #optimizer = optim.SGD(model.parameters(), lr = 0.001, momentum = 0.9)
 
     for epoch in range(epochs):
         epoch_loss = 0

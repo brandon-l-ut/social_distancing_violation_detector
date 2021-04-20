@@ -26,8 +26,8 @@ class Disnet(nn.Module):
             d = 1 / (math.sqrt((bbox[0] - bbox[2])**2 + (abs(bbox[1] - bbox[3])**2)))
 
             # width, height, breadth of person in mm
-            p_width = .570
-            p_height = 1.800
+            p_width = .550
+            p_height = 1.900
             p_breadth = .300
 
             inp.append([w, h, d, p_width, p_height, p_breadth])

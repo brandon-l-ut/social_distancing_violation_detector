@@ -20,8 +20,12 @@ class Camera_IPM:
         
         # Get real world coords of each person
         r_coords = []
+        
         for bbox in bboxes:
-            im_coords = np.array([bbox[2], self.h_img - bbox[3], 1])
+            x_center = (bbox[0] + bbox[2]) / 2
+            y = self.h_img - bbox[3]
+            z = 1
+            im_coords = np.array([x_center, y, z])
             print("im coords", im_coords)
             r_coord = np.matmul(self.intrinsic_matrix, im_coords)
             print("r coord:", r_coord/r_coord[2])

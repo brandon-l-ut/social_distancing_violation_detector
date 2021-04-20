@@ -77,7 +77,7 @@ class SD_Detector():
             output = non_max_suppression(inf_out, conf_thres=conf_thresh, iou_thres=nms_thresh, multi_label=True)
         else:
             inf_out = model(img)
-            utils.post_processing(img, conf_thresh, nms_thresh, inf_out)
+            output = utils.post_processing(img, conf_thresh, nms_thresh, inf_out)
         t2 = time.time()
 
         print('-----------------------------------')
@@ -205,8 +205,7 @@ if __name__ == '__main__':
 
 
 ## TODO:   
-##       (-1) make it work with pruned stuff
-##       (0) make sure to use center x for coordinates
+##       
 ##       (1) centroid tracking
 ##       (2) misc statistics
 ##       (3) clean up git repo, comments, delete old submodules, requirements.txt

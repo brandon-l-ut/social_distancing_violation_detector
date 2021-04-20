@@ -205,7 +205,7 @@ if __name__ == '__main__':
 
 
 ## TODO:   
-##       (-1) make it work with pruned stuff
+##       
 ##       (0) make sure to use center x for coordinates
 ##       (1) centroid tracking
 ##       (2) misc statistics

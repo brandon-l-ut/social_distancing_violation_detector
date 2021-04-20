@@ -24,14 +24,14 @@ Cfg.social_distance = 1800 #mm
 # Vido or image file to detect social distancing in
 #Cfg.file_path = "data/train2014/COCO_train2014_000000023548"
 #Cfg.file_path = "test_img/vid_short.mp4"
-Cfg.file_path = "test_img/geometric/resized/test_3.jpg"
+Cfg.file_path = "test_img/geometric/resized/test_0.jpg"
 Cfg.h_img = 720
 Cfg.w_img = 540
 Cfg.video = False
 Cfg.save_output = False
 Cfg.output_path = "out.jpg"
 
-Cfg.distance_calculation = Distance_Methods.Disnet
+Cfg.distance_calculation = Distance_Methods.Geometric
 
 ## For Geometric - iphone 8
 Cfg.w_focal = 3.99

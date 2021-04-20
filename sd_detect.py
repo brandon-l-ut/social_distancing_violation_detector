@@ -206,7 +206,6 @@ if __name__ == '__main__':
 
 ## TODO:   
 ##       
-##       (0) make sure to use center x for coordinates
 ##       (1) centroid tracking
 ##       (2) misc statistics
 ##       (3) clean up git repo, comments, delete old submodules, requirements.txt

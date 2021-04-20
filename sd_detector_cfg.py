@@ -12,22 +12,23 @@ from easydict import EasyDict
 _BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 Cfg = EasyDict()
-Cfg.cfg_file = os.path.join(_BASE_DIR, 'cfg', 'yolov4-tiny-person.cfg')
-Cfg.weight_file = os.path.join(_BASE_DIR, 'weights', 'best_tinyyolov4_base50.pt')
+Cfg.cfg_file = os.path.join(_BASE_DIR, 'yolov4', 'cfg', 'yolov4-tiny.cfg')
+Cfg.weight_file = os.path.join(_BASE_DIR, 'weights', 'yolov4-tiny.weights')
 Cfg.model_h = 416
 Cfg.model_w = 416
-Cfg.cuda = True
+Cfg.cuda = False
 
 ## 1800 mm ~ 6 ft
 Cfg.social_distance = 1800 #mm
 
 # Vido or image file to detect social distancing in
 #Cfg.file_path = "data/train2014/COCO_train2014_000000023548"
-#Cfg.file_path = "test_img/vid_short.mp4"
-Cfg.file_path = "test_img/geometric/resized/test_2.jpg"
+Cfg.file_path = "test_img/vid_short.mp4"
+#Cfg.file_path = "test_img/geometric/resized/test_2.jpg"
 Cfg.h_img = 720
-Cfg.w_img = 540
-Cfg.video = False
+Cfg.w_img = 1280
+Cfg.video = True
+Cfg.tracking = True
 Cfg.save_output = False
 Cfg.output_path = "out.jpg"
 

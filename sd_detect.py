@@ -14,6 +14,7 @@ from yolov4.tool import utils
 from distance.geometric_distance import Camera_Geom
 from distance.ipm_distance import Camera_IPM
 from distance.disnet_distance import Camera_Disnet
+from distance.centroid_tracking import Centroid_Tracking
 
 from sd_detector_cfg import Distance_Methods
 
@@ -28,6 +29,7 @@ class SD_Detector():
         self.output_path = cfg.output_path
         self.model_w = cfg.model_w
         self.model_h = cfg.model_h
+        self.tracking = cfg.tracking
 
         if cfg.weight_file.endswith('.pt'):
             self.model = Dn_pruned(cfg.cfg_file)
@@ -42,6 +44,9 @@ class SD_Detector():
 
         if cfg.cuda:
             self.model.cuda()
+
+        if self.tracking:
+            self.tracker = Centroid_Tracking()
 
         if cfg.distance_calculation is Distance_Methods.Geometric:
             self.distance_calculator = Camera_Geom(cfg)
@@ -115,7 +120,6 @@ class SD_Detector():
         img = np.copy(img)
         red = (0, 0, 255)
         green = (0, 255, 0)
-
         for bbox in bboxes:
             if bbox[4] == 1:
                 color = red
@@ -127,6 +131,8 @@ class SD_Detector():
             x2 = int(bbox[2])
             y2 = int(bbox[3])
             img = cv2.rectangle(img, (x1, y1), (x2, y2), color)
+            if self.tracking:
+                img = cv2.putText(img, "Person {}".format(bbox[5]), (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 1.2, color, 1)
         
         return img
 
@@ -144,6 +150,10 @@ class SD_Detector():
             post_bboxes = self.post_process_bboxes(bboxes[:,:4].detach().cpu().numpy().tolist())
 
         self.distance_calculator.compute_violations(post_bboxes)
+
+        if self.tracking:
+            post_bboxes = self.tracker.tracking_frame(post_bboxes)
+
         ret_img = self.draw_boxes(img, post_bboxes)
         return ret_img
 
@@ -206,7 +216,6 @@ if __name__ == '__main__':
 
 ## TODO:   
 ##       
-##       (1) centroid tracking
 ##       (2) misc statistics
 ##       (3) clean up git repo, comments, delete old submodules, requirements.txt
 ##       (4) try to get disnet working better? - try normalizing based on pixels 

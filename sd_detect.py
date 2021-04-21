@@ -216,6 +216,6 @@ if __name__ == '__main__':
 
 ## TODO:   
 ##       
-##       (2) misc statistics
+##       (2) misc statistics?
 ##       (3) clean up git repo, comments, delete old submodules, requirements.txt
 ##       (4) try to get disnet working better? - try normalizing based on pixels 

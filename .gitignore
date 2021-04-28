@@ -4,6 +4,7 @@
 *.pth
 *.json
 *.ipynb_checkpoints
+*.MOV
 
 data/train.txt
 data/val.txt

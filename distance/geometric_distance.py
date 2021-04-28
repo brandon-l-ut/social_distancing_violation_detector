@@ -12,7 +12,7 @@ class Camera_Geom:
 
         self.pixel_size = .5 * ((self.w_sens / self.w_img) + (self.h_sens / self.h_img))
 
-        self.avg_height = 1600 #mm
+        self.avg_height = 1725 #mm
 
     ## assumes bboxes are x1y1, x2y2
     def geometric_distance(self, bbox):

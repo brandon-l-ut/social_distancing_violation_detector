@@ -26,9 +26,7 @@ class Camera_IPM:
             y = self.h_img - bbox[3]
             z = 1
             im_coords = np.array([x_center, y, z])
-            print("im coords", im_coords)
             r_coord = np.matmul(self.intrinsic_matrix, im_coords)
-            print("r coord:", r_coord/r_coord[2])
             r_coords.append(list(r_coord/r_coord[2]))
             
         for p1 in range(len(bboxes)):

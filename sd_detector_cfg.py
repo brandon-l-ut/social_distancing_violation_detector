@@ -23,19 +23,19 @@ Cfg.social_distance = 1800
 
 ## Video or image file to detect social distancing in
 #Cfg.file_path = "data/train2014/COCO_train2014_000000023548"
-Cfg.file_path = "test_img/vid_short.mp4"
-#Cfg.file_path = "test_img/geometric/resized/test_2.jpg"
+#Cfg.file_path = "test_img/vid_short.mp4"
+Cfg.file_path = "test_img/experiment/resized/test_11.jpg"
 ## File type of media 
-Cfg.video = True
+Cfg.video = False
 
 ## Dimensions of image / video
 Cfg.h_img = 720
-Cfg.w_img = 1280
+Cfg.w_img = 540
 
 ## Enable tracking people, displays index of person in image
 Cfg.tracking = True
 ## Ability to save output of social distancing run
-Cfg.save_output = False
+Cfg.save_output = True
 ## Location social distancing results should be saved to 
 Cfg.output_path = "out.jpg"
 
@@ -45,7 +45,7 @@ class Distance_Methods(Enum):
     Disnet = 3
 
 ## Method of estimating social distance between people. Must be from the above enum
-Cfg.distance_calculation = Distance_Methods.Disnet
+Cfg.distance_calculation = Distance_Methods.IPM
 
 ## Necessary parameters for estimating social distance using CV geometry 
 ## Default parameters are for an iPhone 8
@@ -65,13 +65,20 @@ Cfg.inverted = False
 # Rotation matrix-R
 # Translation matrix-T
 # Need to put K*R*T below. cut out 3rd column
-Cfg.calib_matrix = [[ 5.80616134e+02,  1.34470135e+02,   -1.01781279e+06] ,
- [ 0.00000000e+00,  6.82233091e+02,  -1.12244972e+05] ,
- [ 0.00000000e+00,  5.00000000e-01,  -3.78453101e+03]]
 
-  #Cfg.intrinsic_matrix = [[ 5.06338752e+02,  1.37705204e+02,  2.38512409e+02, -1.04229923e+06],
+## Matrices for apartment tests
+#Cfg.calib_matrix = [[ 5.80616134e+02,  1.34470135e+02,   -1.01781279e+06] ,
+# [ 0.00000000e+00,  6.82233091e+02,  -1.12244972e+05] ,
+# [ 0.00000000e+00,  5.00000000e-01,  -3.78453101e+03]]
+
+#Cfg.intrinsic_matrix = [[ 5.06338752e+02,  1.37705204e+02,  2.38512409e+02, -1.04229923e+06],
  #[ 0.00000000e+00,  6.12550496e+02,  5.19641209e+01, -2.27083208e+05],
  #[ 0.00000000e+00,  5.00000000e-01,  8.66025404e-01, -3.78453101e+03]]
+
+## Matrices for park tests
+Cfg.calib_matrix = [[ 5.80616134e+02,  1.13659069e+02,   -7.58101505e+05],
+ [ 0.00000000e+00,  6.77398362e+02,   -2.64521288e+05],
+ [ 0.00000000e+00 , 4.22618262e-01,   -2.81884712e+03]]
 
  ## For Disnet
 Cfg.k_matrix = [[580.6161339,    0.,         268.94026972],

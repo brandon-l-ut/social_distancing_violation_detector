@@ -9,9 +9,9 @@ _BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 Cfg = EasyDict()
 
 ## Location of object detection configuration file
-Cfg.cfg_file = os.path.join(_BASE_DIR, 'yolov4', 'cfg', 'yolov4-tiny.cfg')
+Cfg.cfg_file = os.path.join(_BASE_DIR, 'cfg', 'regular_prune_0.7_yolov4-tiny-person.cfg')
 ## Location of object detection weights
-Cfg.weight_file = os.path.join(_BASE_DIR, 'weights', 'yolov4-tiny.weights')
+Cfg.weight_file = os.path.join(_BASE_DIR, 'weights', 'best_regular_prune_0.7_finetune.pt')
 ## Pretrained model input width/height
 Cfg.model_h = 416
 Cfg.model_w = 416
@@ -22,20 +22,21 @@ Cfg.cuda = False
 Cfg.social_distance = 1800
 
 ## Video or image file to detect social distancing in
-#Cfg.file_path = "data/train2014/COCO_train2014_000000023548"
+Cfg.file_path = "IMG_5661.MOV"
 #Cfg.file_path = "test_img/vid_short.mp4"
-Cfg.file_path = "test_img/experiment/resized/test_11.jpg"
+#Cfg.file_path = "test_img/experiment/resized/test_11.jpg"
 ## File type of media 
-Cfg.video = False
+Cfg.video = True
+Cfg.show_fps = False
 
 ## Dimensions of image / video
-Cfg.h_img = 720
-Cfg.w_img = 540
+Cfg.h_img = 568
+Cfg.w_img = 320
 
 ## Enable tracking people, displays index of person in image
 Cfg.tracking = True
 ## Ability to save output of social distancing run
-Cfg.save_output = True
+Cfg.save_output = False
 ## Location social distancing results should be saved to 
 Cfg.output_path = "out.jpg"
 
@@ -45,7 +46,7 @@ class Distance_Methods(Enum):
     Disnet = 3
 
 ## Method of estimating social distance between people. Must be from the above enum
-Cfg.distance_calculation = Distance_Methods.IPM
+Cfg.distance_calculation = Distance_Methods.Disnet
 
 ## Necessary parameters for estimating social distance using CV geometry 
 ## Default parameters are for an iPhone 8

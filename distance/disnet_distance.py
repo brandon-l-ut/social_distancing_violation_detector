@@ -47,7 +47,7 @@ class Camera_Disnet:
             x_centered_coord = [(norm_coord1[0] + norm_coord2[0]) / 2, norm_coord2[2], 1.0]
             
             r_coord = np.array(x_centered_coord) * distance / np.linalg.norm(np.array(x_centered_coord))
-            print("r coord:", r_coord)
+            #print("r coord:", r_coord)
             r_coords.append(list(r_coord))
             
         for p1 in range(len(bboxes)):

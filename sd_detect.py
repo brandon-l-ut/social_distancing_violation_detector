@@ -30,6 +30,8 @@ class SD_Detector():
         self.model_w = cfg.model_w
         self.model_h = cfg.model_h
         self.tracking = cfg.tracking
+        self.fps_vals = []
+        self.show_fps = cfg.show_fps
 
         if cfg.weight_file.endswith('.pt'):
             self.model = Dn_pruned(cfg.cfg_file)
@@ -61,7 +63,6 @@ class SD_Detector():
 
     def do_detect(self, model, img, conf_thresh, nms_thresh, use_cuda=1):
         model.eval()
-        t0 = time.time()
 
         if type(img) == np.ndarray and len(img.shape) == 3:  # cv2 image
             img = torch.from_numpy(img.transpose(2, 0, 1)).float().div(255.0).unsqueeze(0)
@@ -74,8 +75,6 @@ class SD_Detector():
         if use_cuda:
             img = img.cuda()
         img = torch.autograd.Variable(img)
-        
-        t1 = time.time()
 
         if self.pt_weights:
             inf_out, _, _ = model(img)
@@ -83,12 +82,6 @@ class SD_Detector():
         else:
             inf_out = model(img)
             output = utils.post_processing(img, conf_thresh, nms_thresh, inf_out)
-        t2 = time.time()
-
-        print('-----------------------------------')
-        print('           Preprocess : %f' % (t1 - t0))
-        print('      Model Inference : %f' % (t2 - t1))
-        print('-----------------------------------')
 
         return output
 
@@ -138,6 +131,8 @@ class SD_Detector():
 
     def sd_frame(self, img):
         # assumes cv2 img
+        if self.show_fps:
+            t1 = time.time()
         sized = cv2.resize(img, (self.model_w, self.model_h))
         sized = cv2.cvtColor(sized, cv2.COLOR_BGR2RGB)
 
@@ -155,6 +150,12 @@ class SD_Detector():
             post_bboxes = self.tracker.tracking_frame(post_bboxes)
 
         ret_img = self.draw_boxes(img, post_bboxes)
+
+        if self.show_fps:
+            t2 = time.time()
+            if t1 != t2:
+                print("FPS: {}.".format(1 / (t2 - t1)))
+                self.fps_vals.append(1 / (t2 - t1))
         return ret_img
 
     def sd_video(self):
@@ -191,6 +192,9 @@ class SD_Detector():
         cap.release()
         cv2.destroyAllWindows()
 
+        if self.show_fps:
+            print("Average FPS: {}.".format(np.average(self.fps_vals)))
+
     def detect_social_distance(self):
         if self.video:
             self.sd_video()
@@ -212,10 +216,3 @@ if __name__ == '__main__':
 
     detector = SD_Detector(Cfg)
     detector.detect_social_distance()
-
-
-## TODO:   
-##       
-##       (2) misc statistics?
-##       (3) clean up git repo, comments, delete old submodules, requirements.txt
-##       (4) try to get disnet working better? - try normalizing based on pixels 

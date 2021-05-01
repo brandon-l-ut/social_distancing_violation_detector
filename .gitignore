@@ -1,7 +1,6 @@
 *.vscode
 *__pycache__
 *.weights
-*.pth
 *.json
 *.ipynb_checkpoints
 *.MOV

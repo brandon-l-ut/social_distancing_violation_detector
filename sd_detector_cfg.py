@@ -22,16 +22,16 @@ Cfg.cuda = False
 Cfg.social_distance = 1800
 
 ## Video or image file to detect social distancing in
-Cfg.file_path = "IMG_5661.MOV"
+#Cfg.file_path = "IMG_5661.MOV"
 #Cfg.file_path = "test_img/vid_short.mp4"
-#Cfg.file_path = "test_img/experiment/resized/test_11.jpg"
+Cfg.file_path = "test_img/experiment/resized/test_1.jpg"
 ## File type of media 
-Cfg.video = True
+Cfg.video = False
 Cfg.show_fps = False
 
 ## Dimensions of image / video
-Cfg.h_img = 568
-Cfg.w_img = 320
+Cfg.h_img = 720
+Cfg.w_img = 540
 
 ## Enable tracking people, displays index of person in image
 Cfg.tracking = True
@@ -86,4 +86,4 @@ Cfg.k_matrix = [[580.6161339,    0.,         268.94026972],
  [  0.,         577.98851373, 363.36070951],
  [  0. ,          0.,           1.        ]]
 
-Cfg.disnet_weights = "distance/disnet/Disnet.pth"
+Cfg.disnet_weights = "distance/disnet/Disnet-best.pth"

@@ -5,7 +5,7 @@ import torch.optim as optim
 
 from disnet import Disnet
 
-epochs = 500
+epochs = 101
 b_size = 1024
 train_size = 6000
 eval_size = 1481
@@ -43,15 +43,18 @@ if __name__ == '__main__':
             epoch_loss+= loss.item()
             optimizer.step()
 
-        print("Epoch {} MSE loss: {}".format(epoch, epoch_loss))
-        
-    val_loss = 0
-    with torch.no_grad():
-        for inputs, labels in eval_dataloader:
-            outputs = model(inputs, False)
-            loss = criterion(outputs, labels)
-            val_loss += loss.item()
-    
-    print("Val MSE: {}".format(val_loss))
+        def valid_loss(): 
+            val_loss = 0
+            with torch.no_grad():
+                for inputs, labels in eval_dataloader:
+                    outputs = model(inputs, False)
+                    loss = criterion(outputs, labels)
+                    val_loss += loss.item()
+            
+            print("Val L1: {}".format(val_loss))
+
+        if epoch % 10 == 0:
+            valid_loss()
+            print("Epoch {} L1 train loss: {}".format(epoch, epoch_loss))
 
     torch.save(model.state_dict(), "Disnet.pth")

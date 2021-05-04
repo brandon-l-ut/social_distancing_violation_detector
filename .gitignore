@@ -17,3 +17,5 @@ distance/disnet/train/*
 distance/disnet/calib/*
 
 distance/calib_pics
+
+*~

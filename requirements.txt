@@ -1,0 +1,14 @@
+Cython
+numpy>=1.17
+opencv-python==4.1.2.30
+torch>=1.5.1
+matplotlib
+pillow==7.1.2
+tensorboard
+torchvision
+scipy
+tqdm==4.43.0
+scikit-image==0.16.2
+easydict==1.9
+pycocotools
+

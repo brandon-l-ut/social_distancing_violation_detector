@@ -22,9 +22,8 @@ Cfg.cuda = True
 Cfg.social_distance = 1800
 
 ## Video or image file to detect social distancing in
-#Cfg.file_path = "IMG_5668.MOV"
 #Cfg.file_path = "test_img/vid_short.mp4"
-Cfg.file_path = "test_img/experiment/resized/test_10.jpg"
+Cfg.file_path = "test_img/test_0.jpg"
 ## File type of media 
 Cfg.video = False
 Cfg.show_fps = False

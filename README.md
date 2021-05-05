@@ -2,6 +2,7 @@
 Identify violations of social distancing guidelines in real-time using monocular image.
 
 Uses YOLOv4 from https://github.com/Tianxiaomo/pytorch-YOLOv4 (as submodule). 
+
 Uses pruning from https://github.com/SpursLipu/YOLOv3v4-ModelCompression-MultidatasetTraining-Multibackbone (as submodule)
 
 ### Initializing submodules from Git

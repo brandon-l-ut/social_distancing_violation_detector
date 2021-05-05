@@ -1,11 +1,10 @@
-# social_distancing_violation_detector
-Identify violations of social distancing guidelines in real-time
+# Real Time Social Distancing Detector From Monocular Image
+Identify violations of social distancing guidelines in real-time using monocular image.
 
-<!-- Uses Scaled YOLOv4-CSP model from https://github.com/WongKinYiu/ScaledYOLOv4/tree/yolov4-csp -->
 Uses YOLOv4 from https://github.com/Tianxiaomo/pytorch-YOLOv4 (as submodule). 
 Uses pruning from https://github.com/SpursLipu/YOLOv3v4-ModelCompression-MultidatasetTraining-Multibackbone (as submodule)
 
-### Initializing submodule
+### Initializing submodules from Git
 To initialize the submodule, clone the repo with  
 
 ```

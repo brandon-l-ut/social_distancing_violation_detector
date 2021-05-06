@@ -33,6 +33,7 @@ class SD_Detector():
         self.fps_vals = []
         self.show_fps = cfg.show_fps
 
+        # Load weights
         if cfg.weight_file.endswith('.pt'):
             self.model = Dn_pruned(cfg.cfg_file)
             weights = torch.load(cfg.weight_file)
@@ -43,13 +44,13 @@ class SD_Detector():
             self.model = Dn_oob(cfg.cfg_file)
             self.model.load_weights(cfg.weight_file)
             self.pt_weights = False
-
+        # Cuda
         if cfg.cuda:
             self.model.cuda()
 
         if self.tracking:
             self.tracker = Centroid_Tracking()
-
+        # Setup distance method
         if cfg.distance_calculation is Distance_Methods.Geometric:
             self.distance_calculator = Camera_Geom(cfg)
         elif cfg.distance_calculation is Distance_Methods.IPM:
@@ -171,7 +172,6 @@ class SD_Detector():
             i_frame += 1
             ret, frame = cap.read()
 
-            ## Need to change this based on how fast object detection is
             if i_frame % 2 == 1:
                 continue
             

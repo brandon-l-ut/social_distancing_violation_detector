@@ -11,7 +11,7 @@ class Camera_Geom:
         self.social_distance = cfg.social_distance #mm
 
         self.pixel_size = .5 * ((self.w_sens / self.w_img) + (self.h_sens / self.h_img))
-
+        ## Average human height
         self.avg_height = 1725 #mm
 
     ## assumes bboxes are x1y1, x2y2

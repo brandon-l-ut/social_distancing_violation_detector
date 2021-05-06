@@ -1,3 +1,6 @@
+#### Camera calibration from:
+#### https://www.geeksforgeeks.org/camera-calibration-with-python-opencv/
+####
 # Import required modules
 import cv2
 import numpy as np

@@ -2,6 +2,9 @@ from scipy.spatial import distance as dist
 from collections import OrderedDict
 import numpy as np
 
+## Centroid tracking algorithm adapted from:
+## https://www.pyimagesearch.com/2018/07/23/simple-object-tracking-with-opencv/
+
 class Person():
     def __init__(self, centroid, bbox):
         self.bbox = bbox

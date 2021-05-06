@@ -1,3 +1,5 @@
+## Trainer file for Disnet. 
+
 import json
 import torch
 import torch.nn as nn
@@ -7,6 +9,7 @@ from disnet import Disnet
 
 epochs = 101
 b_size = 1024
+## Train test split
 train_size = 6000
 eval_size = 1481
 

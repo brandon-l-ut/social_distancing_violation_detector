@@ -1,3 +1,5 @@
+## Script used to calculate 3x4 camera transformation matrix used by IPM technique. 
+
 import numpy as np
 
 K = [[580.6161339,    0.,         268.94026972, 0],

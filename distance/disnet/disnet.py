@@ -17,7 +17,7 @@ class Disnet(nn.Module):
     def preprocess_bbox(self, bbox_norm, inference):
         bbox_norm = bbox_norm.tolist()
         inp = []
-
+        ## If inference, only 1 instance
         if inference:
             bbox = bbox_norm
             # width height and diagonal of bbox
@@ -25,20 +25,21 @@ class Disnet(nn.Module):
             h = 1 / (abs(bbox[1] - bbox[3]))
             d = 1 / (math.sqrt((bbox[0] - bbox[2])**2 + (abs(bbox[1] - bbox[3])**2)))
 
-            # width, height, breadth of person in mm
+            # width, height, breadth of average person in mm
             p_width = .550
             p_height = 1.900
             p_breadth = .300
 
             inp.append([w, h, d, p_width, p_height, p_breadth])
         else:
+            # Handle batch input
             for bbox in bbox_norm:
                 # width height and diagonal of bbox
                 w = 1 / (abs(bbox[0] - bbox[2]))
                 h = 1 / (abs(bbox[1] - bbox[3]))
                 d = 1 / (math.sqrt((bbox[0] - bbox[2])**2 + (abs(bbox[1] - bbox[3])**2)))
 
-                # width, height, breadth of person in mm
+                # width, height, breadth of average person in mm
                 p_width = .550
                 p_height = 1.750
                 p_breadth = .300

@@ -16,7 +16,7 @@ Cfg.weight_file = os.path.join(_BASE_DIR, 'weights', 'best_regular_prune_0.7_fin
 Cfg.model_h = 416
 Cfg.model_w = 416
 ## Use Cuda GPU
-Cfg.cuda = True
+Cfg.cuda = False
 
 ## Configurable social distance. Default set to 1800 mm ~ 6 ft
 Cfg.social_distance = 1800

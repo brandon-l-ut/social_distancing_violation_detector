@@ -26,7 +26,7 @@ git submodule update --init --recursive
  - Ensure you have your desired settings configured in ```sd_detector_cfg.py```. There are many configuration options so be sure you read the comments carefully. The repo is already setup to run images from the input_images folder. 
  - Run the following in the command line:
     ```
-    python sd_detect.pty
+    python sd_detect.py
     ```
 - A window will pop up with the social distancing results as an image or video, depending on file type.
 - Press 'q' at any time to close the pop-up.

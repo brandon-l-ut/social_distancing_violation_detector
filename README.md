@@ -31,6 +31,9 @@ git submodule update --init --recursive
 - A window will pop up with the social distancing results as an image or video, depending on file type.
 - Press 'q' at any time to close the pop-up.
 
+### Test Images
+Test files are provided in ```input_images```. The cfg file is configured correctly to handle the image files. We do not know the camera intrinsic matrix for the camera used to collect the video in ```input_images``` so the results in the video will not be perfect. 
+
 ## Cfg and weights mapping
 The following pairs of weights and .cfg files go together. 
 - ```yolov4-tiny-person.cfg``` & ```best_tinyyolov4_sparseforprune0.pt```
